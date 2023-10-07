@@ -1,6 +1,6 @@
 from flask_apispec import MethodResource
 from flask_apispec import doc
-from flask_jwt_extended import fresh_jwt_required
+from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 
 from db.db import DB
@@ -44,7 +44,7 @@ class RunDatabaseCompliance(MethodResource, Resource):
              "200": {},
          })
     @catch_exception
-    @fresh_jwt_required
+    @jwt_required(fresh=True)
     @verify_admin_access
     def post(self):
 

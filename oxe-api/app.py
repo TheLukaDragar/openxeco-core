@@ -13,6 +13,7 @@ from utils.regex import has_mail_format
 from utils.resource import get_admin_post_resources
 
 from db.db import DB
+from flask_oidc import OpenIDConnect
 
 import socket
 import sys
@@ -61,6 +62,12 @@ app.config['APISPEC_SPEC'] = APISpec(
     openapi_version='2.0.0'
 )
 
+app.config["OIDC_CLIENT_SECRETS"] = "client_secrets.json"
+app.config["OIDC_COOKIE_SECURE"] = False
+app.config["OIDC_CALLBACK_ROUTE"] = "/account/oidccallback"
+app.config["OIDC_SCOPES"] = ["openid", "email", "profile"]
+app.config["OIDC_ID_TOKEN_COOKIE_NAME"] = "oidc_token"
+
 # Create DB instance
 db = DB(app)
 
@@ -70,6 +77,8 @@ bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 mail = Mail(app)
 docs = FlaskApiSpec(app)
+
+oidc = OpenIDConnect(app)
 
 # Init and set the resources for Flask
 api = Api(app)
@@ -99,7 +108,8 @@ def create_initial_admin(email, password):
             "email": email,
             "password": bcrypt.generate_password_hash(password),
             "is_active": 1,
-            "is_admin": 1
+            "is_admin": 1,
+            "is_sso": 0,
         },
         f"Initial user {email}"
     )
@@ -158,7 +168,7 @@ if __name__ in ('app', '__main__'):
     # check_port()
 
     from routes import set_routes
-    set_routes({"api": api, "db": db, "mail": mail, "docs": docs})
+    set_routes({"api": api, "db": db, "mail": mail, "docs": docs, "oidc": oidc})
 
     if config.INITIAL_ADMIN_EMAIL:
         create_initial_admin(config.INITIAL_ADMIN_EMAIL, config.INITIAL_ADMIN_PASSWORD)

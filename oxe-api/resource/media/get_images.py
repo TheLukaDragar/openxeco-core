@@ -1,6 +1,6 @@
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
-from flask_jwt_extended import fresh_jwt_required
+from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 from webargs import fields, validate
 
@@ -29,7 +29,7 @@ class GetImages(MethodResource, Resource):
         'order': fields.Str(required=False, missing='desc', validate=lambda x: x in ['desc', 'asc']),
         'search': fields.Str(required=False),
     }, location="query")
-    @fresh_jwt_required
+    @jwt_required(fresh=True)
     @catch_exception
     def get(self, **kwargs):
 

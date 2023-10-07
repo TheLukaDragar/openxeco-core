@@ -1,6 +1,6 @@
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
-from flask_jwt_extended import fresh_jwt_required
+from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from webargs import fields
@@ -29,7 +29,7 @@ class AddTaxonomyValue(MethodResource, Resource):
         'category': fields.Str(),
         'value': fields.Str(),
     })
-    @fresh_jwt_required
+    @jwt_required(fresh=True)
     @verify_admin_access
     @catch_exception
     def post(self, **kwargs):

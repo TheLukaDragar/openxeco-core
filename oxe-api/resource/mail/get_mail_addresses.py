@@ -1,6 +1,6 @@
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
-from flask_jwt_extended import fresh_jwt_required
+from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 from webargs import fields
 
@@ -27,7 +27,7 @@ class GetMailAddresses(MethodResource, Resource):
         'include_users': fields.Bool(required=False, missing=False),
         'consider_communication_acceptance': fields.Bool(required=False, missing=False),
     }, location="query")
-    @fresh_jwt_required
+    @jwt_required(fresh=True)
     @verify_admin_access
     @catch_exception
     def get(self, **kwargs):

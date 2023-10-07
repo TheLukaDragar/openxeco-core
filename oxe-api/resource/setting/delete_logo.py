@@ -2,7 +2,7 @@ import os
 
 from flask_apispec import MethodResource
 from flask_apispec import doc
-from flask_jwt_extended import fresh_jwt_required
+from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 
 from config.config import IMAGE_FOLDER
@@ -26,7 +26,7 @@ class DeleteLogo(MethodResource, Resource):
              "200": {},
              "422": {"description": "There is no logo defined for this project"},
          })
-    @fresh_jwt_required
+    @jwt_required(fresh=True)
     @verify_admin_access
     @catch_exception
     def post(self):

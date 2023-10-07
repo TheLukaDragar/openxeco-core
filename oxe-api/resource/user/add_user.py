@@ -2,7 +2,7 @@ from flask import render_template
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
 from flask_bcrypt import generate_password_hash
-from flask_jwt_extended import fresh_jwt_required
+from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 from webargs import fields
 
@@ -36,7 +36,7 @@ class AddUser(MethodResource, Resource):
         'email': fields.Str(),
         'password': fields.Str(),
     })
-    @fresh_jwt_required
+    @jwt_required(fresh=True)
     @verify_admin_access
     @catch_exception
     def post(self, **kwargs):

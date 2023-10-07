@@ -1,6 +1,6 @@
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
-from flask_jwt_extended import fresh_jwt_required
+from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 from webargs import fields
 
@@ -44,7 +44,7 @@ class UpdateEntity(MethodResource, Resource):
         'github_url': fields.Str(required=False, allow_none=True),
         'mastodon_url': fields.Str(required=False, allow_none=True),
     })
-    @fresh_jwt_required
+    @jwt_required(fresh=True)
     @verify_admin_access
     @catch_exception
     def post(self, **kwargs):

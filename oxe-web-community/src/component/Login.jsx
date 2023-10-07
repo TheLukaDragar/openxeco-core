@@ -19,6 +19,7 @@ export default class Login extends React.Component {
 		this.requestReset = this.requestReset.bind(this);
 		this.resetPassword = this.resetPassword.bind(this);
 		this.onKeyDown = this.onKeyDown.bind(this);
+		this.loginSSO = this.loginSSO.bind(this);
 
 		let view = null;
 
@@ -154,6 +155,11 @@ export default class Login extends React.Component {
 		this.props.cookies.remove("access_token_cookie", {});
 		this.setState({ view: "login" });
 		window.history.pushState({ path: "/login" }, "", "/login");
+	}
+
+	loginSSO() {
+		this.props.cookies.remove("access_token_cookie", {});
+		window.history.pushState({ path: "/account/loginsso" }, "", "/account/loginsso");
 	}
 
 	onKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
@@ -433,6 +439,11 @@ export default class Login extends React.Component {
 												onClick={() => this.changeState("view", "forgot")}
 											>
 												I forgot my password
+											</button>
+										</div>
+										<div className="left-buttons">
+											<button onClick={() => this.loginSSO()}>
+												Login with SSO
 											</button>
 										</div>
 									</div>

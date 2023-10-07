@@ -3,7 +3,7 @@ import re
 from flask import render_template
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
-from flask_jwt_extended import fresh_jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restful import Resource
 from webargs import fields
 from sqlalchemy.exc import IntegrityError
@@ -39,7 +39,7 @@ class AddMyArticle(MethodResource, Resource):
         'title': fields.Str(),
         'entity_id': fields.Int(),
     })
-    @fresh_jwt_required
+    @jwt_required(fresh=True)
     @catch_exception
     def post(self, **kwargs):
 

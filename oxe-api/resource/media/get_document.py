@@ -1,6 +1,6 @@
 from flask_apispec import MethodResource
 from flask_apispec import doc
-from flask_jwt_extended import fresh_jwt_required
+from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 from sqlalchemy import or_
 
@@ -24,7 +24,7 @@ class GetDocument(MethodResource, Resource):
              "200": {},
              "422": {"description": "Object not found"},
          })
-    @fresh_jwt_required
+    @jwt_required(fresh=True)
     @verify_admin_access
     @catch_exception
     def get(self, id_):

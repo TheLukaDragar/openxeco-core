@@ -4,6 +4,8 @@ from resource.account.change_password import ChangePassword
 from resource.account.create_account import CreateAccount
 from resource.account.forgot_password import ForgotPassword
 from resource.account.login import Login
+from resource.account.loginsso import LoginSSO
+from resource.account.oidccallback import OIDCCallback
 from resource.account.logout import Logout
 from resource.account.refresh import Refresh
 from resource.account.reset_password import ResetPassword
@@ -249,6 +251,14 @@ def set_routes(*args):
         # Build the args
 
         class_args = {a: plugins[a] for a in inspect.getfullargspec(res[1]).args if a != "self"}
+
+        # Add the oidc plugin if the resource is Login
+        if res[0] == 'LoginSSO':
+            class_args['oidc'] = plugins['oidc']
+
+        if res[0] == 'OIDCCallback':
+            class_args['oidc'] = plugins['oidc']
+
 
         # Add the resource
 

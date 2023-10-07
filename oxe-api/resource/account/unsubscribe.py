@@ -22,8 +22,7 @@ class Unsubscribe(MethodResource, Resource):
          responses={
              "200": {},
          })
-    @jwt_required
-    @catch_exception
+    @jwt_required()    
     def get(self):
 
         data = self.db.get(self.db.tables["User"], {"id": get_jwt_identity()})

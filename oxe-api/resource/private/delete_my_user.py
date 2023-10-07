@@ -1,6 +1,6 @@
 from flask_apispec import MethodResource
 from flask_apispec import doc
-from flask_jwt_extended import fresh_jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restful import Resource
 
 from decorator.catch_exception import catch_exception
@@ -22,7 +22,7 @@ class DeleteMyUser(MethodResource, Resource):
              "200": {},
              "422": {"description": "Object not found"}
          })
-    @fresh_jwt_required
+    @jwt_required(fresh=True)
     @catch_exception
     def post(self):
 

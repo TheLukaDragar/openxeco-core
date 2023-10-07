@@ -1,6 +1,6 @@
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
-from flask_jwt_extended import fresh_jwt_required
+from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 from webargs import fields
 
@@ -27,7 +27,7 @@ class AddArticleVersion(MethodResource, Resource):
         'name': fields.Str(),
         'article_id': fields.Int(),
     })
-    @fresh_jwt_required
+    @jwt_required(fresh=True)
     @verify_admin_access
     @catch_exception
     def post(self, **kwargs):

@@ -1,6 +1,6 @@
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
-from flask_jwt_extended import fresh_jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restful import Resource
 from webargs import fields
 
@@ -26,7 +26,7 @@ class AddMyFormAnswer(MethodResource, Resource):
         'form_question_id': fields.Int(),
         'value': fields.Str(),
     })
-    @fresh_jwt_required
+    @jwt_required(fresh=True)
     @catch_exception
     def post(self, **kwargs):
 
